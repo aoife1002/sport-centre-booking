@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gym Register</title>
+    <link rel="stylesheet" href="./css/register.css">
+</head>
+<body>
+    <div class="register">
+        <form class="register_main">
+            <h3>Gym Register</h3>
+            <div class="register_main_item user_name">
+                <span class="input_label">UserName:</span>
+                <input type="text" id="username" />
+                <span class="main_item_volid">Please enter your username</span>
+            </div>
+            <div class="register_main_item pass">
+                <span class="input_label">PassWord:</span>
+                <input type="password" id="password"  />
+                <span class="main_item_volid">Please enter your password</span>
+            </div>
+            <div class="register_main_item pass">
+                <span class="input_label">confirmPassword:</span>
+                <input type="password" id="confirmPassword"  />
+                <span class="main_item_volid">Please enter your confirmation password</span>
+            </div>
+            <div class="role_type">
+                <span class="input_label input_label_role">identity:</span>
+                <div class="radio_role">
+                    <input type="radio" id="customer" name="identity" value="1">
+                    <label for="customer">User</label><br>
+                    <input type="radio" id="staff" name="identity" value="0">
+                    <label for="staff">Admin</label><br>
+                </div>
+            </div>
+            <div class="btn" id="registerBtn">Register</div>
+        </form>
+    </div>
+</body>
+</html>
+
+<script src="./js/register.js"></script>

@@ -1,0 +1,104 @@
+/*
+ Navicat Premium Data Transfer
+
+ Source Server         : 杭州
+ Source Server Type    : MySQL
+ Source Server Version : 80200
+ Source Host           : 47.96.155.51:3306
+ Source Schema         : vb
+
+ Target Server Type    : MySQL
+ Target Server Version : 80200
+ File Encoding         : 65001
+
+ Date: 11/05/2024 09:47:03
+*/
+
+SET NAMES utf8mb4;
+SET FOREIGN_KEY_CHECKS = 0;
+
+-- ----------------------------
+-- Table structure for vb_account
+-- ----------------------------
+DROP TABLE IF EXISTS `vb_account`;
+CREATE TABLE `vb_account`  (
+  `id` bigint NOT NULL AUTO_INCREMENT,
+  `user_name` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL,
+  `password` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL,
+  `type` int NULL DEFAULT NULL,
+  PRIMARY KEY (`id`) USING BTREE
+) ENGINE = InnoDB AUTO_INCREMENT = 1787140 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci ROW_FORMAT = Dynamic;
+
+-- ----------------------------
+-- Records of vb_account
+-- ----------------------------
+INSERT INTO `vb_account` VALUES (17837, 'demo1', '123', 1);
+INSERT INTO `vb_account` VALUES (17871, '212121', '122121', 1);
+INSERT INTO `vb_account` VALUES (175621, 'abo', '123', 0);
+INSERT INTO `vb_account` VALUES (178721, '1', '2', 1);
+INSERT INTO `vb_account` VALUES (1787139, '112', '111', 1);
+
+-- ----------------------------
+-- Table structure for vb_activity
+-- ----------------------------
+DROP TABLE IF EXISTS `vb_activity`;
+CREATE TABLE `vb_activity`  (
+  `id` bigint NOT NULL AUTO_INCREMENT,
+  `type` int NULL DEFAULT NULL,
+  `activity_type` int NULL DEFAULT NULL,
+  `capacity` int NULL DEFAULT NULL,
+  `start_time` timestamp NULL DEFAULT NULL,
+  `end_time` timestamp NULL DEFAULT NULL,
+  PRIMARY KEY (`id`) USING BTREE
+) ENGINE = InnoDB AUTO_INCREMENT = 178719 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci ROW_FORMAT = Dynamic;
+
+-- ----------------------------
+-- Records of vb_activity
+-- ----------------------------
+INSERT INTO `vb_activity` VALUES (178715, 1, 1, 12, '2024-05-10 22:28:00', '2024-05-11 22:29:00');
+INSERT INTO `vb_activity` VALUES (178716, 2, 1, 10, '2024-05-10 22:41:24', '2024-05-12 22:41:28');
+INSERT INTO `vb_activity` VALUES (178717, 3, 2, 8, '2024-05-10 22:28:00', '2024-05-11 22:29:00');
+INSERT INTO `vb_activity` VALUES (178718, 4, 2, 12, '2024-05-10 22:28:00', '2024-05-11 22:39:00');
+
+-- ----------------------------
+-- Table structure for vb_order
+-- ----------------------------
+DROP TABLE IF EXISTS `vb_order`;
+CREATE TABLE `vb_order`  (
+  `id` bigint NOT NULL AUTO_INCREMENT,
+  `account_id` bigint NULL DEFAULT NULL,
+  `activity_id` bigint NULL DEFAULT NULL,
+  `status` int NULL DEFAULT NULL,
+  PRIMARY KEY (`id`) USING BTREE
+) ENGINE = InnoDB AUTO_INCREMENT = 11 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci ROW_FORMAT = Dynamic;
+
+-- ----------------------------
+-- Records of vb_order
+-- ----------------------------
+INSERT INTO `vb_order` VALUES (1, 17837, 178715, 2);
+INSERT INTO `vb_order` VALUES (2, 17871, 178716, 1);
+INSERT INTO `vb_order` VALUES (8, 175621, 178717, 1);
+INSERT INTO `vb_order` VALUES (9, 178721, 178718, 1);
+INSERT INTO `vb_order` VALUES (10, 17837, 178717, 1);
+
+-- ----------------------------
+-- Table structure for vb_user
+-- ----------------------------
+DROP TABLE IF EXISTS `vb_user`;
+CREATE TABLE `vb_user`  (
+  `id` bigint NOT NULL AUTO_INCREMENT,
+  `account_id` bigint NULL DEFAULT NULL,
+  `name` varchar(200) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL,
+  `age` int NULL DEFAULT NULL,
+  `email` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL,
+  PRIMARY KEY (`id`) USING BTREE
+) ENGINE = InnoDB AUTO_INCREMENT = 4 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci ROW_FORMAT = Dynamic;
+
+-- ----------------------------
+-- Records of vb_user
+-- ----------------------------
+INSERT INTO `vb_user` VALUES (1, 175621, '小八', 18, '123456@qq.com');
+INSERT INTO `vb_user` VALUES (2, 17837, '小崔', 18, '123456@qq.com');
+INSERT INTO `vb_user` VALUES (3, 17871, '小白', 17, '12334@gmail.com');
+
+SET FOREIGN_KEY_CHECKS = 1;

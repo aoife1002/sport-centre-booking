@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.example.venuebookingserver.dao.OrderMapper">
+
+    <select id="selectOrderList" resultType="com.example.venuebookingserver.entity.Order">
+        SELECT
+        vo.id,
+        vo.activity_id,
+        vo.STATUS,
+        va.type,
+        va.activity_type,
+        va.capacity,
+        va.start_time,
+        va.end_time
+        FROM
+        vb_order vo
+        LEFT JOIN
+        vb_activity va ON vo.activity_id = va.id
+        <where>
+            <if test="accountId != null and accountId != ''">
+                and vo.account_id = #{accountId}
+            </if>
+        </where>
+    </select>
+</mapper>

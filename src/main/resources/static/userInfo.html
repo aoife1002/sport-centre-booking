@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>User Interface</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }
+        .main-container {
+            width: 80%;
+            max-width: 600px;
+            background-color: #fff;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            padding: 20px;
+        }
+        .header {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+        .header h1 {
+            color: #333;
+        }
+        .content {
+            display: flex;
+            flex-direction: column;
+        }
+        .card {
+            border: 1px solid #ccc;
+            background-color: white;
+            box-shadow: 2px 2px 5px rgba(0,0,0,0.1);
+            border-radius: 5px;
+            padding: 20px;
+            margin-bottom: 20px;
+            cursor: pointer;
+            transition: box-shadow 0.3s ease;
+        }
+        .card:hover {
+            box-shadow: 2px 2px 10px rgba(0,0,0,0.2);
+        }
+        .card h2 {
+            margin-top: 0;
+            color: #333;
+        }
+        .card p {
+            color: #666;
+        }
+        .logout-container {
+            margin-top: 40px;
+            text-align: center;
+        }
+        .button {
+            display: inline-block;
+            padding: 10px 20px;
+            border: none;
+            background-color: #4caf50; /* Green */
+            color: white;
+            font-weight: bold;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+            border-radius: 5px;
+            margin-right: 10px;
+        }
+        .button:hover {
+            background-color: #45a049;
+        }
+    </style>
+</head>
+<body>
+<div class="main-container">
+    <div class="header"><h1>User Page</h1></div>
+    <div class="content">
+        <div class="card" onclick="showProfile()">
+            <h2>My Profile</h2>
+            <p>View and edit your personal information.</p>
+        </div>
+        <div class="card" onclick="showMyOrder()">
+            <h2>My Order</h2>
+            <p>View your current and past orders.</p>
+        </div>
+        <div class="logout-container">
+            <button class="button" onclick="confirmSwitchUser()">Log in another account</button>
+            <button class="button" onclick="confirmLogout()">Log out</button>
+        </div>
+    </div>
+</div>
+<script src="https://cdn.bootcss.com/jquery/3.5.1/jquery.min.js"></script>
+<script>
+    function showProfile() {
+        window.location.href = 'user.html';
+    }
+    function showMyOrder() {
+        window.location.href = 'myOrder.html';
+    }
+    function confirmSwitchUser() {
+        if(confirm("Are you sure you want to log in another account?")) {
+            switchUser();
+        }
+    }
+    function switchUser() {
+        window.open("login.html", "_blank");
+    }
+    function confirmLogout() {
+        if(confirm("Are you sure you want to log out?")) {
+            logout();
+        }
+    }
+    function logout() {
+        $.ajax({
+            url: "/account/logout",
+            type: "POST",
+            success: function (response) {
+                if (response.success) {
+                    alert("Logout successful");
+                    window.open("login.html", "_blank");
+                } else {
+                    alert(response.message);
+                }
+            },
+            error: function (xhr, status, error) {
+                console.error("Error while logging out:", error);
+            }
+        });
+    }
+</script>
+</body>
+</html>

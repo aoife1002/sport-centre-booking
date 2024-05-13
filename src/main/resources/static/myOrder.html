@@ -1,0 +1,234 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>User Order Page</title>
+    <style>
+        /* Basic styling */
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            background-image: url('img/login_bg.jpg'); /* Background image URL */
+            background-size: cover;
+            background-repeat: no-repeat;
+        }
+        .container {
+            display: flex;
+            flex-direction: column;
+            width: 80%;
+            max-width: 1200px;
+            background-color: rgba(255, 255, 255, 0.8); /* Semi-transparent white background */
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            border-radius: 10px;
+            overflow: hidden;
+        }
+        .header {
+            text-align: center;
+            padding: 20px 0;
+            background-color: #007bff; /* Header background color */
+            color: #fff; /* Header text color */
+            font-size: 24px;
+            font-weight: bold;
+            margin-bottom: 20px;
+        }
+        .left-side {
+            flex: 1;
+            padding: 20px;
+            border-right: 1px solid #ccc;
+        }
+        .right-side {
+            flex: 1;
+            padding: 20px;
+        }
+        h2 {
+            margin-top: 0;
+        }
+        ul {
+            list-style-type: none;
+            padding: 0;
+        }
+        li {
+            margin-bottom: 10px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 10px;
+            background-color: #f9f9f9;
+            border-radius: 5px;
+        }
+        li > div {
+            flex: 1;
+            margin-right: 10px;
+        }
+        label {
+            font-weight: bold;
+        }
+        input[type="text"] {
+            width: 100%;
+            padding: 8px;
+            margin-top: 5px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+        }
+        button {
+            padding: 10px 20px;
+            background-color: #007bff;
+            color: #fff;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+        button:hover {
+            background-color: #0056b3;
+        }
+        #return-icon {
+            position: absolute;
+            top: 20px;
+            left: 20px;
+            color: #666;
+            font-size: 25px;
+            cursor: pointer;
+            transition: color 0.3s ease;
+        }
+        #return-icon:hover {
+            color: #333;
+        }
+    </style>
+</head>
+<body>
+<div class="container">
+    <div class="header">
+        My Orders
+    </div>
+    <div class="left-side">
+        <h2>Order List</h2>
+        <ul id="order-list">
+            <!-- Order list will be dynamically populated here -->
+        </ul>
+    </div>
+    <div class="right-side">
+        <h2>Filters</h2>
+        <form id="filter-form">
+            <div>
+                <label for="search">Search:</label>
+                <input type="text" id="search" name="search">
+            </div>
+            <div>
+                <label for="status">Status:</label>
+                <select id="status" name="status">
+                    <option value="all">All</option>
+                    <option value="1">Booked</option>
+                    <option value="2">Cancelled</option>
+                </select>
+            </div>
+            <button type="submit">Apply Filters</button>
+        </form>
+    </div>
+</div>
+<script>
+    document.getElementById('filter-form').addEventListener('submit', function(event) {
+        event.preventDefault(); // Prevent form submission
+        filterOrders();
+    });
+
+    function filterOrders() {
+        var searchValue = document.getElementById('search').value.toLowerCase();
+        var statusValue = document.getElementById('status').value;
+        var orders = document.getElementById('order-list');
+        orders.innerHTML = ''; // Clear previous list
+
+        // Fetch orders from the server
+        fetch('/order/getOrders')
+            .then(response => response.json())
+            .then(data => {
+                data.data.forEach(order => { // Accessing orders array inside data object
+                    if ((searchValue === '' || order.id.toString().includes(searchValue)) && (statusValue === 'all' || statusValue === '1' && order.status === 1 || statusValue === '2' && order.status === 2)) {
+                        var li = document.createElement('li');
+                        li.innerHTML = `
+                        <div>
+                            <strong>Order #${order.id}</strong><br>
+                            Activity ID: ${order.activityId}<br>
+                            <span style="color: ${order.status === 1 ? 'green' : 'red'};">
+                                Status: ${order.status === 1 ? 'Booked' : 'Cancelled'}
+                            </span><br>
+                        </div>
+                        <div>
+                            Type: ${order.type === 1 ? 'Badminton Court' : order.type === 2 ? 'Gym' : order.type === 3 ? 'Basketball Court' : order.type === 4 ? 'Football Field' : 'Unknown'}<br>
+                            Capacity: ${order.capacity}<br>
+                            Start Time: ${order.startTime}<br>
+                            End Time: ${order.endTime}<br>
+                        </div>
+                    `;
+
+                        var buttonDiv = document.createElement('div');
+                        var checkInButton = document.createElement('button');
+                        checkInButton.textContent = 'Check In';
+                        checkInButton.addEventListener('click', function() {
+                            checkIn(order);
+                        });
+                        var cancelButton = document.createElement('button');
+                        cancelButton.textContent = 'Cancel';
+                        cancelButton.addEventListener('click', function() {
+                            cancel(order);
+                        });
+                        buttonDiv.appendChild(checkInButton);
+                        buttonDiv.appendChild(cancelButton);
+                        li.appendChild(buttonDiv);
+                        orders.appendChild(li);
+                    }
+                });
+            })
+            .catch(error => console.error('Error fetching orders:', error));
+    }
+    function checkIn(order) {
+        fetch('/order/checkInOrder', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(order)
+        })
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    alert(data.message); // Success message
+                    filterOrders(); // Reload orders after check-in
+                } else {
+                    alert(data.message)
+                }
+            })
+            .catch(error => console.error('Error checking in order:', error));
+    }
+
+    function cancel(order) {
+        fetch('/order/cancelOrder', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(order)
+        })
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    alert(data.message); // Success message
+                    filterOrders(); // Reload orders after cancelation
+                } else {
+                    alert(data.message)
+                }
+            })
+            .catch(error => console.error('Error canceling order:', error));
+    }
+
+    // Initial filter when page loads
+    filterOrders();
+
+</script>
+</body>
+</html>

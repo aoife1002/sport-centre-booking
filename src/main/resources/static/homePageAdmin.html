@@ -1,0 +1,423 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Administrator Home Page</title>
+    <style>
+        /* 全局样式 */
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-image: url("img/login_bg.jpg");
+            background-repeat: no-repeat;
+            background-attachment: fixed;
+            background-size: 100% 100%;
+        }
+        /* 导航栏样式 */
+        .navbar {
+            background-color: #333;
+            overflow: hidden;
+            text-align: center;
+        }
+        .navbar a {
+            display: inline-block;
+            color: white;
+            padding: 14px 20px;
+            text-decoration: none;
+            transition: background-color 0.3s;
+        }
+        .navbar a:hover {
+            background-color: #111;
+        }
+        /* 添加按钮样式 */
+        .add-btn {
+            position: absolute;
+            bottom: 10px;
+            right: 10px;
+            background-color: #007bff; /* 蓝色 */
+            color: white;
+            padding: 8px 16px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+        .add-btn:hover {
+            background-color: #0056b3; /* 深蓝色 */
+        }
+        /* 删除按钮样式 */
+        .delete-btn {
+            background-color: #808080; /* 灰色 */
+            color: white;
+            padding: 8px 16px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+        .delete-btn:hover {
+            background-color: #555; /* 深灰色 */
+        }
+        /* 主体内容样式 */
+        .container {
+            padding: 20px;
+            display: flex;
+            justify-content: center;
+            flex-wrap: wrap; /* 换行 */
+        }
+        .box {
+            position: relative; /* 相对定位 */
+            width: 40%;
+            height: 200px;
+            background-color: #f0f0f0;
+            margin: 10px;
+            text-align: center;
+            line-height: 200px;
+            border-radius: 5px; /* 添加圆角 */
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* 添加阴影 */
+            transition: transform 0.3s; /* 添加动画效果 */
+        }
+        .box:hover {
+            transform: scale(1.05); /* 鼠标悬停时放大 */
+            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2); /* 提高阴影 */
+        }
+        /* 模态框样式 */
+        .modal {
+            display: none; /* 默认隐藏模态框 */
+            position: fixed;
+            z-index: 1;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            overflow: auto;
+            background-color: rgba(0,0,0,0.4);
+        }
+        .modal-content {
+            background-color: #fefefe;
+            margin: 15% auto;
+            padding: 20px;
+            border: 1px solid #888;
+            width: 50%;
+            border-radius: 5px;
+        }
+        .close {
+            color: #aaa;
+            float: right;
+            font-size: 28px;
+            font-weight: bold;
+        }
+        .close:hover,
+        .close:focus {
+            color: black;
+            text-decoration: none;
+            cursor: pointer;
+        }
+        /* 表单样式 */
+        label {
+            display: block;
+            margin-bottom: 10px;
+        }
+        input[type="text"],
+        input[type="number"],
+        input[type="datetime-local"] {
+            width: calc(100% - 22px);
+            padding: 5px;
+            margin-bottom: 10px;
+            border-radius: 5px;
+            border: 1px solid #ccc;
+        }
+        input[type="button"] {
+            background-color: #007bff; /* 蓝色 */
+            color: white;
+            padding: 8px 16px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+        input[type="button"]:hover {
+            background-color: #0056b3; /* 深蓝色 */
+        }
+        select {
+            width: calc(100% - 22px);
+            padding: 5px;
+            margin-bottom: 10px;
+            border-radius: 5px;
+            border: 1px solid #ccc;
+        }
+        .activity-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 10px;
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+        }
+        /* 当前选中导航链接的样式 */
+        .active {
+            background-color: #111 !important;
+        }
+    </style>
+</head>
+<body>
+<!-- 导航栏 -->
+<div class="navbar">
+    <a href="#" id="activityNav" class="active">Activity</a>
+    <a href="customerManagement.html" id="customerNav">Customer</a>
+    <a href="Administrator.html" id="individualNav">Individual</a>
+</div>
+
+<!-- 主体内容 -->
+<div class="container">
+    <div class="box" data-type="2" data-activity-type="1">
+        <h2>Gym</h2>
+        <!-- 每个盒子添加 "Add" 按钮 -->
+        <button type="button" class="add-btn" data-type="2" data-activity-type="1">Add</button>
+    </div>
+    <div class="box" data-type="4" data-activity-type="1">
+        <h2>Football</h2>
+        <button type="button" class="add-btn" data-type="4" data-activity-type="1">Add</button>
+    </div>
+    <div class="box" data-type="3" data-activity-type="1">
+        <h2>Basketball</h2>
+        <button type="button" class="add-btn" data-type="3" data-activity-type="1">Add</button>
+    </div>
+    <div class="box" data-type="1" data-activity-type="1">
+        <h2>Badminton</h2>
+        <button type="button" class="add-btn" data-type="1" data-activity-type="1">Add</button>
+    </div>
+</div>
+
+<!-- 活动列表模态框 -->
+<div id="activityListModal" class="modal">
+    <div class="modal-content">
+        <span class="close">&times;</span>
+        <h2>Activity List</h2>
+        <div id="activityList">
+            <!-- Activities will be displayed here -->
+        </div>
+    </div>
+</div>
+
+<!-- 添加活动模态框 -->
+<div id="myModal" class="modal">
+    <div class="modal-content">
+        <span class="close">&times;</span>
+        <h2>Add Activity</h2>
+        <form id="activityForm">
+            <input type="hidden" id="type" name="type" readonly>
+            <label for="activityType">Activity Type:</label>
+            <select id="activityType" name="activityType">
+                <option value="1">By Session</option>
+                <option value="2">By Person</option>
+            </select><br>
+
+            <label for="capacity">Capacity:</label>
+            <input type="number" id="capacity" name="capacity" required><br>
+            <label for="startTime">Start Time:</label>
+            <input type="datetime-local" id="startTime" name="startTime" required><br>
+            <label for="endTime">End Time:</label>
+            <input type="datetime-local" id="endTime" name="endTime" required><br>
+            <input type="button" value="Save" id="saveBtn">
+        </form>
+    </div>
+</div>
+
+<script>
+    // 获取 "Add" 按钮和模态框
+    var modal = document.getElementById("myModal");
+    var activityListModal = document.getElementById("activityListModal");
+
+    // 获取导航链接
+    var activityNav = document.getElementById("activityNav");
+    var customerNav = document.getElementById("customerNav");
+    var individualNav = document.getElementById("individualNav");
+
+    // 点击导航链接，切换当前选中状态
+    activityNav.onclick = function() {
+        setActiveNav(this);
+    }
+
+    customerNav.onclick = function() {
+        setActiveNav(this);
+    }
+
+    individualNav.onclick = function() {
+        setActiveNav(this);
+    }
+
+    // 设置当前选中导航链接
+    function setActiveNav(navElement) {
+        var activeNav = document.querySelector(".navbar .active");
+        if (activeNav) {
+            activeNav.classList.remove("active");
+        }
+        navElement.classList.add("active");
+    }
+
+    // 点击盒子，显示模态框并获取数据
+    document.querySelectorAll('.box').forEach(function(box) {
+        box.onclick = function() {
+            var type = this.getAttribute("data-type");
+            var activityType = this.getAttribute("data-activity-type");
+            document.getElementById("type").value = type;
+            document.getElementById("activityType").value = activityType;
+            getActivities(type);
+        }
+    });
+
+    // 点击 "Add" 按钮，显示添加活动模态框
+    document.querySelectorAll('.add-btn').forEach(function(addBtn) {
+        addBtn.onclick = function(e) {
+            e.stopPropagation(); // 阻止事件冒泡
+            var type = this.getAttribute("data-type");
+            var activityType = this.getAttribute("data-activity-type");
+            document.getElementById("type").value = type;
+            document.getElementById("activityType").value = activityType;
+            modal.style.display = "block";
+        }
+    });
+
+    // 获取模态框中的关闭按钮
+    var span = document.getElementsByClassName("close");
+
+    // 点击关闭按钮或者模态框之外的地方，关闭模态框
+    for (var i = 0; i < span.length; i++) {
+        span[i].onclick = function() {
+            modal.style.display = "none";
+            activityListModal.style.display = "none";
+            clearModal();
+        }
+    }
+
+    window.onclick = function(event) {
+        if (event.target == modal || event.target == activityListModal) {
+            modal.style.display = "none";
+            activityListModal.style.display = "none";
+            clearModal();
+        }
+    }
+
+    // 获取保存按钮
+    var saveBtn = document.getElementById("saveBtn");
+
+    // 点击保存按钮，发送数据到后端接口
+    saveBtn.onclick = function() {
+        var activity = {
+            type: document.getElementById("type").value,
+            activityType: document.getElementById("activityType").value,
+            capacity: document.getElementById("capacity").value,
+            startTime: document.getElementById("startTime").value,
+            endTime: document.getElementById("endTime").value
+        };
+        // 校验时间
+        var start = new Date(activity.startTime);
+        var end = new Date(activity.endTime);
+        if (isNaN(start.getTime()) || isNaN(end.getTime()) || start >= end) {
+            alert("Please enter valid start and end times.");
+            return;
+        }
+        // 转换为UTC时间
+        activity.startTime = start.toISOString();
+        activity.endTime = end.toISOString();
+
+        // 发送数据到后端接口
+        var xhr = new XMLHttpRequest();
+        xhr.open("POST", "/activity/add", true);
+        xhr.setRequestHeader("Content-Type", "application/json;charset=UTF-8");
+        xhr.onreadystatechange = function () {
+            if (xhr.readyState == 4) {
+                if (xhr.status == 200) {
+                    var response = JSON.parse(xhr.responseText);
+                    if (response.success) {
+                        alert("Activity added successfully!");
+                        modal.style.display = "none";
+                        clearModal();
+                        getActivities(activity.type);
+                    } else {
+                        alert("Failed to add activity: " + response.message);
+                    }
+                } else {
+                    alert("Failed to add activity. Please try again later.");
+                }
+            }
+        };
+        xhr.send(JSON.stringify(activity));
+    }
+
+    // 获取活动列表
+    function getActivities(type) {
+        var xhr = new XMLHttpRequest();
+        xhr.open("POST", "/activity/list", true);
+        xhr.setRequestHeader("Content-Type", "application/json;charset=UTF-8");
+        xhr.onreadystatechange = function() {
+            if (xhr.readyState == 4 && xhr.status == 200) {
+                var response = JSON.parse(xhr.responseText);
+                if (response.success) {
+                    displayActivities(response.data);
+                    activityListModal.style.display = "block";
+                } else {
+                    alert("Failed to get activities.");
+                }
+            }
+        };
+        xhr.send(JSON.stringify({ type: type }));
+    }
+
+    // 显示活动列表
+    function displayActivities(activities) {
+        var activityList = document.getElementById("activityList");
+        activityList.innerHTML = "";
+        activities.forEach(function(activity) {
+            var activityItem = document.createElement("div");
+            activityItem.classList.add("activity-item");
+            activityItem.innerHTML = `
+                <span>ID: ${activity.id}</span>
+                <span>Capacity: ${activity.capacity}</span>
+                <span>Start Time: ${new Date(activity.startTime).toLocaleString()}</span>
+                <span>End Time: ${new Date(activity.endTime).toLocaleString()}</span>
+                <button class="delete-btn" data-id="${activity.id}">Delete</button>
+            `;
+            activityList.appendChild(activityItem);
+        });
+
+        // 删除按钮点击事件
+        var deleteBtns = document.querySelectorAll('.delete-btn');
+        deleteBtns.forEach(function(deleteBtn) {
+            deleteBtn.onclick = function() {
+                var id = this.getAttribute("data-id");
+                var confirmDelete = confirm("Are you sure you want to delete this activity?");
+                if (confirmDelete) {
+                    var xhr = new XMLHttpRequest();
+                    xhr.open("DELETE", "/activity/" + id, true);
+                    xhr.onreadystatechange = function() {
+                        if (xhr.readyState == 4) {
+                            if (xhr.status == 200) {
+                                alert("Activity deleted successfully!");
+                                getActivities(document.getElementById("type").value);
+                            } else {
+                                alert("Failed to delete activity.");
+                            }
+                        }
+                    };
+                    xhr.send();
+                }
+            }
+        });
+    }
+
+    // 清空模态框中的数据
+    function clearModal() {
+        document.getElementById("activityType").value = "1";
+        document.getElementById("capacity").value = "";
+        document.getElementById("startTime").value = "";
+        document.getElementById("endTime").value = "";
+    }
+</script>
+
+</body>
+</html>

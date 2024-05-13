@@ -1,0 +1,316 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sports Center Booking System</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f4f4f4;
+        }
+
+        .container {
+            width: 80%;
+            margin: 0 auto;
+            padding: 20px;
+            background-color: #fff;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+
+        .header {
+            text-align: center;
+            font-size: 40px;
+            margin-bottom: 40px;
+            background-color: #78b3f4;
+            color: #fff;
+            padding: 10px 0; /* Padding top and bottom */
+            border-radius: 8px 8px 0 0;
+        }
+
+        .buttons {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+
+        .button {
+            padding: 10px 20px;
+            margin: 0 10px;
+            background-color: #007bff;
+            color: #ffffff;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            text-decoration: none; /* Remove underline */
+        }
+
+        .button.active {
+            background-color: #0056b3;
+        }
+
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 20px;
+        }
+
+        .box {
+            position: relative;
+            padding: 20px;
+            background-color: #ddd;
+            border-radius: 8px;
+            cursor: pointer;
+            max-width: 400px; /* Set max width */
+            margin-bottom: 20px; /* Set bottom margin */
+        }
+
+        .box.selected {
+            background-color: #007bff;
+            color: #fff;
+        }
+
+        .buy-button {
+            position: absolute;
+            bottom: 10px;
+            right: 10px;
+            background-color: #007bff;
+            color: #ffffff;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            padding: 5px 10px;
+        }
+
+        .buy-button:hover {
+            background-color: #0056b3;
+        }
+
+        .sold-out-text {
+            color: red;
+            font-weight: bold;
+            position: absolute;
+            bottom: 5px;
+            left: 10px;
+            margin: 0;
+            padding: 0;
+        }
+
+        .time-selector {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
+        .time-input {
+            margin: 0 10px;
+        }
+
+        #search-button, #reset-button {
+            padding: 10px 20px;
+            background-color: #007bff;
+            color: #ffffff;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            text-decoration: none; /* Remove underline */
+        }
+
+        #search-button:hover, #reset-button:hover {
+            background-color: #0056b3;
+        }
+    </style>
+</head>
+<body>
+<div class="container">
+    <div class="header">
+        Sports Center Booking System
+    </div>
+    <div class="buttons">
+        <button class="button active" data-type="2">Gym</button>
+        <button class="button" data-type="3">Basketball Court</button>
+        <button class="button" data-type="1">Badminton Court</button>
+        <button class="button" data-type="4">Football Field</button>
+    </div>
+    <div class="time-selector">
+        <label for="start-time">Start Time:</label>
+        <input type="datetime-local" id="start-time" class="time-input">
+        <label for="end-time">End Time:</label>
+        <input type="datetime-local" id="end-time" class="time-input">
+        <button id="search-button">Search</button>
+        <button id="reset-button">Reset</button>
+    </div>
+    <div class="grid" id="grid"></div>
+</div>
+<script src="https://cdn.bootcss.com/jquery/3.5.1/jquery.min.js"></script>
+<script>
+    if (!Date.prototype.toISOString) {
+        (function () {
+
+            function pad(number) {
+                if (number < 10) {
+                    return '0' + number;
+                }
+                return number;
+            }
+
+            Date.prototype.toISOString = function () {
+                return this.getUTCFullYear() +
+                    '-' + pad(this.getUTCMonth() + 1) +
+                    '-' + pad(this.getUTCDate()) +
+                    'T' + pad(this.getUTCHours()) +
+                    ':' + pad(this.getUTCMinutes()) +
+                    ':' + pad(this.getUTCSeconds()) +
+                    '.' + (this.getUTCMilliseconds() / 1000).toFixed(3).slice(2, 5) +
+                    'Z';
+            };
+
+        }());
+    }
+
+    function formatDateTime(dateTimeString) {
+        const options = { timeZone: 'Asia/Shanghai' };
+        return new Date(dateTimeString).toLocaleString('zh-CN', options);
+    }
+
+    const grid = document.getElementById('grid');
+    const buttons = document.querySelector('.buttons');
+    const startTimeInput = document.getElementById('start-time');
+    const endTimeInput = document.getElementById('end-time');
+    const searchButton = document.getElementById('search-button');
+    const resetButton = document.getElementById('reset-button');
+
+    // Initialize activity grid
+    function initGrid(type, startTime, endTime) {
+        console.log("Initializing grid for type:", type, "and time:", startTime, "-", endTime);
+        grid.innerHTML = '';
+        // Get activity information
+        $.ajax({
+            url: "/activity/list",
+            type: "POST",
+            contentType: "application/json",
+            data: JSON.stringify({ type: type, startTime: startTime, endTime: endTime }), // Pass type, start time, and end time
+            success: function (response) {
+                console.log("Response received:", response);
+                if (response.success) {
+                    const activities = response.data;
+                    if (activities.length > 0) {
+                        activities.forEach(activity => {
+                            const box = document.createElement('div');
+                            box.classList.add('box');
+                            let price = Math.floor(Math.random() * (99 - 50 + 1)) + 50;
+                            const buyButton = document.createElement('button');
+                            buyButton.classList.add('buy-button');
+                            buyButton.textContent = `Buy Ticket (${price}¥)`;
+                            buyButton.addEventListener('click', () => {
+                                console.log("Buying ticket for activity ID:", activity.id);
+                                buyTicket(activity.id);
+                            });
+                            box.appendChild(buyButton);
+
+                            box.insertAdjacentHTML('beforeend', `
+                                <p>Start Time: ${formatDateTime(activity.startTime)}</p>
+                                <p>End Time: ${formatDateTime(activity.endTime)}</p>
+                                <p>Capacity: ${activity.capacity}</p>
+                                <p>Price: ${price}¥</p>
+                            `);
+
+                            if (activity.isFull) {
+                                const soldOutText = document.createElement('p');
+                                soldOutText.classList.add('sold-out-text');
+                                soldOutText.innerHTML = '<strong>Sold-Out</strong>';
+                                box.appendChild(soldOutText);
+                                buyButton.style.display = 'none';
+                            }
+
+                            grid.appendChild(box);
+                        })
+                    } else {
+                        grid.innerHTML = '<p>No activities available</p>';
+                    }
+                } else {
+                    console.error(response.msg);
+                }
+            },
+            error: function (xhr, textStatus, errorThrown) {
+                console.error(xhr.responseText);
+            }
+        });
+    }
+
+    // Toggle button state
+    function toggleButton(button) {
+        buttons.querySelectorAll('.button').forEach(btn => btn.classList.remove('active'));
+        button.classList.add('active');
+    }
+
+    // Add button click event
+    buttons.addEventListener('click', function (event) {
+        if (event.target.matches('.button')) {
+            const type = event.target.getAttribute('data-type');
+            console.log("Button clicked, type:", type);
+            toggleButton(event.target);
+            const startTime = startTimeInput.value;
+            const endTime = endTimeInput.value;
+            initGrid(type, startTime, endTime);
+        }
+    });
+
+    // Search button click event
+    searchButton.addEventListener('click', function () {
+        const type = document.querySelector('.button.active').getAttribute('data-type');
+        const startTime = new Date(startTimeInput.value).toISOString();
+        const endTime = new Date(endTimeInput.value).toISOString();
+        initGrid(type, startTime, endTime);
+    });
+
+    // Reset button click event
+    resetButton.addEventListener('click', function () {
+        const type = document.querySelector('.button.active').getAttribute('data-type');
+        startTimeInput.value = "";
+        endTimeInput.value = "";
+        initGrid(type, "", "");
+    });
+
+
+    // Initialize on page load
+    document.addEventListener('DOMContentLoaded', function () {
+        const startTime = startTimeInput.value;
+        const endTime = endTimeInput.value;
+        initGrid(2, startTime, endTime); // Default type is Gym, default start time and end time is current
+    });
+
+    // Buy ticket function
+    function buyTicket(activityId) {
+        console.log("Buying ticket for activity ID:", activityId);
+        const order = {
+            activityId: activityId,
+            status: 1
+        };
+        $.ajax({
+            url: "/order/addOrder",
+            type: "POST",
+            contentType: "application/json",
+            data: JSON.stringify(order),
+            success: function (response) {
+                console.log("Purchase response:", response);
+                if (response.success) {
+                    alert('Purchase successful!');
+                    const type = document.querySelector('.button.active').getAttribute('data-type');
+                    const startTime = startTimeInput.value;
+                    const endTime = endTimeInput.value;
+                    initGrid(type, startTime, endTime); // Refresh page after successful purchase
+                } else {
+                    alert(response.message);
+                    window.open("login.html", "_blank")
+                }
+            },
+            error: function (xhr, textStatus, errorThrown) {
+                console.error(xhr.responseText);
+            }
+        });
+    }
+</script>
+</body>
+</html>

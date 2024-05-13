@@ -1,0 +1,269 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Personal Profile</title>
+    <style>
+        /* Global styles */
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-image: url('img/login_bg.jpg');
+            background-repeat: no-repeat;
+            background-attachment: fixed;
+            background-size: 100% 100%;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        /* Navigation bar styles */
+        .navbar {
+            background-color: #333;
+            overflow: hidden;
+            text-align: center;
+            width: 100%;
+        }
+
+        .navbar a {
+            display: inline-block;
+            color: white;
+            padding: 14px 20px;
+            text-decoration: none;
+            transition: background-color 0.3s;
+        }
+
+        .navbar a:hover {
+            background-color: #111;
+        }
+
+        /* Profile container styles */
+        .profile-container {
+            background: white;
+            padding: 20px;
+            width: 60%;
+            min-width: 300px;
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            margin: 20px;
+        }
+
+        /* Profile image styles */
+        .profile-image input {
+            display: none;
+        }
+
+        .profile-image label {
+            display: block;
+            width: 120px;
+            height: 120px;
+            border-radius: 50%;
+            margin: 10px auto;
+            background: #ddd;
+            cursor: pointer;
+            background-size: cover;
+            background-position: center;
+        }
+
+        /* Input field styles */
+        .input-field {
+            margin: 10px 0;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .input-field input[type="text"],
+        .input-field input[type="email"] {
+            padding: 8px;
+            width: calc(100% - 100px);
+            border-radius: 5px;
+            border: 1px solid #ccc;
+        }
+
+        .input-field button {
+            padding: 8px 16px;
+            background-color: #007BFF;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            flex-shrink: 0;
+            margin-left: auto;
+            margin-right: auto;
+            display: block;
+        }
+
+        .input-field button:hover {
+            background-color: #0056b3;
+        }
+
+        /* Bottom buttons styles */
+        .bottom-buttons {
+            text-align: center;
+            margin-top: 20px;
+        }
+
+        .bottom-buttons button {
+            padding: 10px;
+            background-color: #007BFF;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            width: 150px;
+            margin: 5px auto;
+            display: block;
+        }
+
+        .bottom-buttons button:hover {
+            background-color: #0056b3;
+        }
+
+        /* User info styles */
+        .user-info {
+            margin-top: 20px;
+            text-align: center;
+        }
+
+        .user-info h2 {
+            margin-bottom: 10px;
+        }
+
+        .user-info table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        .user-info table td,
+        .user-info table th {
+            padding: 8px;
+            border-bottom: 1px solid #ddd;
+            text-align: left;
+        }
+
+        .user-info table th {
+            background-color: #f2f2f2;
+        }
+    </style>
+</head>
+
+<body>
+
+<!-- 导航栏 -->
+<div class="navbar">
+    <a href="homePageAdmin.html">Activity</a>
+    <a href="customerManagement.html">Customer</a>
+    <a href="#" class="active">Account</a>
+</div>
+
+<!-- Profile container -->
+<div class="profile-container">
+    <div class="profile-image">
+        <input type="file" id="profile-upload" accept="image/*" onchange="loadFile(event)">
+        <label for="profile-upload" style="background-image: url('./img/icon.jpg');"></label>
+    </div>
+    <h1>Personal Profile</h1>
+    <div class="input-field">
+        <input type="text" id="name" value="" />
+        <button onclick="updateUserName()">Modify Name</button>
+    </div>
+    <div class="user-info">
+        <h2>User Info</h2>
+        <table>
+            <tr>
+                <th>ID</th>
+                <td id="userId"></td>
+            </tr>
+            <tr>
+                <th>Account ID</th>
+                <td id="accountId"></td>
+            </tr>
+            <tr>
+                <th>Name</th>
+                <td id="userName"></td>
+            </tr>
+            <tr>
+                <th>Age</th>
+                <td id="age"></td>
+            </tr>
+            <tr>
+                <th>Email</th>
+                <td id="email"></td>
+            </tr>
+            <tr>
+                <th>Identity</th>
+                <td id="identity">Admin</td>
+            </tr>
+        </table>
+    </div>
+    <div class="bottom-buttons">
+        <button onclick="location.href='login.html'">Sign In/Out</button>
+        <button onclick="location.href='register.html'">Other Accounts</button>
+    </div>
+</div>
+
+<!-- Script to load profile image and fetch user data -->
+<script>
+
+    // Function to update user name
+    function updateUserName() {
+        var name = document.getElementById("name").value;
+        var id = document.getElementById("userId").innerText;
+        fetch('/user/updateUserInfo', {
+            method: 'PUT',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({ name: name, id: id})
+        })
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error('Network response was not ok');
+                }
+                return response.json();
+            })
+            .then(data => {
+                if (data.success) {
+                    alert('User name updated successfully.');
+                    console.log('User name updated:', data);
+                    document.getElementById("userName").innerText = name;
+                } else {
+                    throw new Error(data.message);
+                }
+            })
+            .catch(error => {
+                console.error('Error updating user name:', error);
+                alert('Failed to update user name. ' + error.message);
+            });
+    }
+
+    // Function to fetch user data
+    window.onload = function () {
+        fetch('/user/getUserInfo')
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error('Network response was not ok');
+                }
+                return response.json();
+            })
+            .then(data => {
+                document.getElementById("userId").innerText = data.data.id;
+                document.getElementById("accountId").innerText = data.data.accountId;
+                document.getElementById("userName").innerText = data.data.name;
+                document.getElementById("age").innerText = data.data.age;
+                document.getElementById("email").innerText = data.data.email;
+            })
+            .catch(error => {
+                console.error('Error fetching user data:', error);
+                alert('Failed to fetch user data. ' + error.message);
+            });
+    }
+
+</script>
+</body>
+
+</html>

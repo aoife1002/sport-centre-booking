@@ -1,0 +1,53 @@
+
+body,html{
+     padding: 0;
+     margin: 0;
+     background-color: blanchedalmond;
+}
+.hearder{
+    display: flex;
+    justify-content: space-between;
+    padding:0 260px;
+}
+.hearder img{
+    width: 120px;
+    height: auto;
+}
+.head_btn_group {
+    display: flex;
+}
+.head_btn_group a {
+    text-decoration: none;
+    font-size: 18px;
+    padding: 20px;
+    padding-right: 20px;
+}
+
+.content{
+    margin-top: 20px;
+    padding:0 260px;
+    width: 100%;
+    box-sizing: border-box;
+    min-height: 300px;
+}
+.content .content_item{
+    display: flex;
+    margin-bottom: 10px;
+}
+.content .content_item .disp{
+    padding: 10px 20px;
+}
+
+.content .content_item .disp h1,h2,h3,h4{
+       text-align: center;
+}
+.content .content_item img{
+     width: 450px;
+     height: auto;
+}
+
+.test{
+    background: pink;
+    display: flex;
+    justify-content: center;
+}

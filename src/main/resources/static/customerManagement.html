@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Order Management</title>
+    <style>
+        /* Global styles */
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-image: url('img/login_bg.jpg');
+            background-repeat: no-repeat;
+            background-attachment: fixed;
+            background-size: 100% 100%;
+        }
+
+        /* Navigation bar styles */
+        .navbar {
+            background-color: #333;
+            overflow: hidden;
+            text-align: center;
+        }
+
+        .navbar a {
+            display: inline-block;
+            color: white;
+            padding: 14px 20px;
+            text-decoration: none;
+            transition: background-color 0.3s;
+        }
+
+        .navbar a:hover {
+            background-color: #555;
+        }
+
+        .navbar a.active {
+            background-color: #555;
+        }
+
+        /* Main content styles */
+        .container {
+            padding: 20px;
+            display: flex;
+            justify-content: center;
+            flex-wrap: wrap;
+            /* 换行 */
+        }
+
+        .box {
+            width: 800px;
+            height: 400px;
+            background-color: #f0f0f0;
+            margin: 10px;
+            border-radius: 5px;
+            /* 添加圆角 */
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            /* 添加阴影 */
+            transition: transform 0.3s;
+            /* 添加动画效果 */
+            position: relative;
+            /* 相对定位 */
+            overflow: hidden;
+            /* 隐藏溢出内容 */
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            /* 让内容垂直水平居中 */
+            cursor: pointer;
+        }
+
+        .box:hover {
+            transform: scale(1.05);
+            /* 鼠标悬停时放大 */
+            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+            /* 提高阴影 */
+        }
+
+        /* 账户框样式 */
+        .account-box,
+        .order-box {
+            padding: 20px;
+            text-align: center;
+        }
+
+        /* Button styles */
+        .box h2 {
+            margin: 0;
+            color: #333;
+            font-size: 24px;
+            text-align: center;
+        }
+    </style>
+</head>
+
+<body>
+
+<!-- 导航栏 -->
+<div class="navbar">
+    <a href="homePageAdmin.html" id="activityNav">Activity</a>
+    <a href="#" id="customerNav" class="active">Customer</a>
+    <a href="Administrator.html" id="individualNav">Individual</a>
+</div>
+
+<!-- 主体内容 -->
+<div class="container">
+    <a href="orderManagement.html">
+        <div class="box">
+            <div class="order-box">
+                <h2>Order Management</h2>
+            </div>
+        </div>
+    </a>
+    <a href="accountManagement.html">
+        <div class="box">
+            <div class="account-box">
+                <h2>Account Management</h2>
+            </div>
+        </div>
+    </a>
+</div>
+
+</body>
+
+</html>

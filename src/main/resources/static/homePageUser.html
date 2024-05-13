@@ -1,0 +1,256 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Reservation System</title>
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        /* Custom CSS for hover effect */
+        .nav-item:hover {
+            background-image: linear-gradient(to right, #b0b0b0, #a0a0a0);
+            transition: background-image 0.3s ease;
+        }
+
+        /* Custom CSS for text description */
+        .text-description {
+            /*background-color: #f8f9fa;*/
+            padding: 15px;
+            border-radius: 5px;
+            margin-top: 30px;
+            margin-left: -15px; /* Offset to align with video frame */
+        }
+
+        /* Custom CSS for hyperlink */
+        .text-description a {
+            color: #007bff;
+            text-decoration: none;
+            transition: color 0.3s ease;
+        }
+
+        .text-description a:hover {
+            color: #0056b3;
+        }
+        .row1 {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: space-around;
+            padding: 20px 0;
+            height: 1200px;
+            width: 1500px;
+        }
+        .nav-item.clicked {
+            background-color: #ccc; /* Change to desired gray color */
+        }
+        .nav-item.default {
+            background-color: #ccc; /* Change to desired gray color */
+        }
+
+    </style>
+</head>
+<body>
+
+<!-- Navigation Bar -->
+<nav class="navbar navbar-expand-lg navbar-light bg-light">
+    <div class="container">
+        <a class="navbar-brand" href="#">Reservation System</a>
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarNav">
+            <ul class="navbar-nav ms-auto">
+                <li class="nav-item">
+                    <a class="nav-link" id = "de" href="#" onclick="showActivity(this)" >Activity</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="#" onclick="showOrder(this)" id="orderButton">Order</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="#" onclick="showIndividual(this)" id="individualButton">Individual</a>
+                </li>
+            </ul>
+        </div>
+    </div>
+</nav>
+
+<!-- Main Content -->
+<div class="container mt-5">
+    <div class="row" id="activityPage">
+    <div class="row">
+        <div class="col-md-6">
+            <h2>GYM</h2>
+            <video controls width="100%">
+                <source src="/mp4/gym.mp4" type="video/mp4">
+                Your browser does not support the video tag.
+            </video>
+        </div>
+        <div class="col-md-6 align-self-start">
+            <div class="text-description">
+                <p>Welcome to our gym, your ultimate destination for fitness and well-being! Whether you're a beginner or a seasoned athlete, our gym offers a wide range of equipment and facilities to help you achieve your fitness goals. Enjoy access to high-quality cardio machines, strength training equipment, and free weights. Join our various group fitness classes, led by certified trainers, designed to energize and challenge you. Sign up today to start your journey towards a healthier and stronger you!
+                </p>
+            </div>
+        </div>
+    </div>
+    <div class="row mt-5">
+        <div class="col-md-6">
+            <h2>Badminton</h2>
+            <video controls width="100%">
+                <source src="/mp4/bad.mp4" type="video/mp4">
+                Your browser does not support the video tag.
+            </video>
+        </div>
+        <div class="col-md-6 align-self-start">
+            <div class="text-description">
+                <p>
+                    Welcome to our badminton hub! Badminton, a fast-paced and dynamic sport, is loved worldwide for its thrilling rallies and precision. Ideal for both casual and competitive players, it offers an exhilarating blend of speed, agility, and strategy. Join us to experience the excitement firsthand, whether you're looking to catch a professional match or book a court for your own game. Secure your tickets now and step into the world of badminton!
+                </p>
+            </div>
+        </div>
+    </div>
+    <div class="row mt-5">
+        <div class="col-md-6">
+            <h2>Football</h2>
+            <video controls width="100%">
+                <source src="/mp4/foo.mp4" type="video/mp4">
+                Your browser does not support the video tag.
+            </video>
+        </div>
+        <div class="col-md-6 align-self-start">
+            <div class="text-description">
+                <p>Discover the world of football at our premier venue! Football, the most popular sport globally, captivates millions with its blend of teamwork, strategy, and athleticism. Whether you're a fan of thrilling club matches or international tournaments, our venue provides the perfect backdrop to experience the passion and excitement of the game. Book your tickets today and join us for an unforgettable football experience, right here on the pitch!
+                </p>
+            </div>
+        </div>
+    </div>
+    <div class="row mt-5">
+        <div class="col-md-6">
+            <h2>Basketball</h2>
+            <video controls width="100%">
+                <source src="/mp4/bas.mp4" type="video/mp4">
+                Your browser does not support the video tag.
+            </video>
+        </div>
+        <div class="col-md-6 align-self-start">
+            <div class="text-description">
+                <p>Ready to hit the court? Our venue offers top-notch basketball courts available for reservation. Whether you're looking to host a tournament, practice your dribbling, or simply enjoy a fun game with friends, our courts are the perfect setting for basketball enthusiasts of all skill levels. Book your court today and experience the thrill of basketball in a professional and energetic environment. Don’t miss out—reserve your spot now and bring your best game!</p>
+            </div>
+        </div>
+    </div>
+    </div>
+    <div class="row" id="orderPage" style="display: none;">
+        <iframe class="row1" id="contentFrame" src="order.html"></iframe>
+    </div>
+    <div class="row" id="individualPage" style="display: none;">
+        <iframe class="row1" id="contentFrame" src="userInfo.html"></iframe>
+    </div>
+</div>
+
+
+
+<!-- Bootstrap Bundle with Popper -->
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
+<script>
+    // function showActivity() {
+    //     document.getElementById("activityPage").style.display = "flex";
+    //     document.getElementById("orderPage").style.display = "none";
+    //     document.getElementById("individualPage").style.display = "none";
+    //     document.getElementById("activityButton").classList.add("active");
+    //     document.getElementById("orderButton").classList.remove("active");
+    //     document.getElementById("individualButton").classList.remove("active");
+    // }
+    //
+    // function showOrder() {
+    //     document.getElementById("activityPage").style.display = "none";
+    //     document.getElementById("orderPage").style.display = "flex";
+    //     document.getElementById("individualPage").style.display = "none";
+    //     document.getElementById("activityButton").classList.remove("active");
+    //     document.getElementById("orderButton").classList.add("active");
+    //     document.getElementById("individualButton").classList.remove("active");
+    // }
+    //
+    // function showIndividual() {
+    //     document.getElementById("activityPage").style.display = "none";
+    //     document.getElementById("orderPage").style.display = "none";
+    //     document.getElementById("individualPage").style.display = "flex";
+    //     document.getElementById("activityButton").classList.remove("active");
+    //     document.getElementById("orderButton").classList.remove("active");
+    //     document.getElementById("individualButton").classList.add("active");
+    // }
+
+    function showActivity(element) {
+        // Remove 'clicked' class from all nav items
+        document.querySelectorAll('.nav-item').forEach(item => {
+            item.classList.remove('clicked');
+        });
+        // Add 'clicked' class to the clicked nav item
+        element.parentElement.classList.add('clicked');
+        // Add your showActivity() functionality here
+        document.getElementById("activityPage").style.display = "flex";
+        document.getElementById("orderPage").style.display = "none";
+        document.getElementById("individualPage").style.display = "none";
+    }
+
+    function showOrder(element) {
+        // Remove 'clicked' class from all nav items
+        document.querySelectorAll('.nav-item').forEach(item => {
+            item.classList.remove('clicked');
+        });
+        document.querySelectorAll('.nav-item.default').forEach(item => {
+            item.classList.remove('clicked');
+        });
+        // Add 'clicked' class to the clicked nav item
+        element.parentElement.classList.add('clicked');
+        // Add your showOrder() functionality here
+        document.getElementById("activityPage").style.display = "none";
+        document.getElementById("orderPage").style.display = "flex";
+        document.getElementById("individualPage").style.display = "none";
+    }
+
+    function showIndividual(element) {
+        // Remove 'clicked' class from all nav items
+        document.querySelectorAll('.nav-item').forEach(item => {
+            item.classList.remove('clicked');
+        });
+        document.querySelectorAll('.nav-item.default').forEach(item => {
+            item.classList.remove('clicked');
+        });
+        console.log(element)
+        // Add 'clicked' class to the clicked nav item
+        element.parentElement.classList.add('clicked');
+        // Add your showIndividual() functionality here
+        document.getElementById("activityPage").style.display = "none";
+        document.getElementById("orderPage").style.display = "none";
+        document.getElementById("individualPage").style.display = "flex";
+    }
+
+    // function showGym() {
+    //     alert("You clicked GYM");
+    // }
+    //
+    // function showBadminton() {
+    //     alert("You clicked Badminton");
+    // }
+    //
+    // function showFootball() {
+    //     alert("You clicked Football");
+    // }
+    //
+    // function showBasketball() {
+    //     alert("You clicked Basketball");
+    // }
+
+    // 页面加载时默认显示活动页面
+    window.onload = function () {
+        // var defaultMenuItem = document.querySelector('.nav-item.default');
+        document.getElementById('de').parentElement.classList.add('clicked');;
+        // console.log(elementById)
+        // elementById.element.parentElement.classList.add('clicked');
+        // if (defaultMenuItem) {
+        //     defaultMenuItem.classList.add('clicked');
+        // }
+
+    };
+</script>
+</body>
+</html>

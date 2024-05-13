@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gym Login</title>
+    <link rel="stylesheet" href="./css/login.css">
+</head>
+
+<body>
+<div class="login">
+    <form class="login_main">
+        <h3>Gym Login</h3>
+        <div class="login_main_item user_name">
+            <span class="input_label">UserName:</span>
+            <input type="text" id="username" />
+            <span class="main_item_volid">Please enter your username</span>
+        </div>
+        <div class="login_main_item pass">
+            <span class="input_label">PassWord:</span>
+            <input type="password" id="password" />
+            <span class="main_item_volid">Please enter your password</span>
+        </div>
+        <div class="role_type">
+            <span class="input_label input_label_role">Choose Role:</span>
+            <div class="radio_role">
+                <input type="radio" id="User" name="role" value="1">
+                <label for="User">User</label><br>
+                <input type="radio" id="Admin" name="role" value="0">
+                <label for="Admin">Admin</label><br>
+            </div>
+        </div>
+        <div class="find_pass">
+            <span>Forgot your</span>
+            <a class="jump_reset" href="./resetPass.html" target="_blank">password</a>
+            <span>?</span>
+        </div>
+        <div class="btn" id="loginBtn">Login</div>
+    </form>
+</div>
+</body>
+</html>
+
+<script src="./js/login.js"></script>
